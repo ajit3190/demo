@@ -1,0 +1,53 @@
+<!-- heroku git:remote -a sid-login-app -->
+<!-- https://www.loggly.com/blog/analyzing-heroku-router-logs-with-solarwinds-loggly/ -->
+<!-- SECTION -->
+<div class="section">
+  <!-- container -->
+  <div class="container">
+    <!-- row -->
+    <div class="row">
+      <% @services.each do |service| %>
+        <!-- shop -->
+        <div class="col-md-4 col-xs-6">
+          <div class="shop">
+            <div class="shop-img">
+              <%= service_dashboard_img(service) %>
+            </div>
+            <div class="shop-body">
+              <h3><%= service.title %></h3>
+              <h4>₹<%= service.price %></h4>
+              <%= link_to 'Details', get_service_service_path(service),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window', class: 'btn active'}  %>
+              <% if current_user.role_id == 1 %>      
+                <div class="desc">
+                  <%= button_to 'Remove', service_path(service), class: 'btn btn-danger btn-sm', method: :delete, data: {confirm: 'Are you sure?'} %>
+                </div>
+              <% end %>
+              <div class="desc"><%= link_to "Add Cart",'javascript:;',id: "service_#{service.id}", class: " btn-sm add-service-id" %></div>
+            </div>
+          </div>
+        </div>
+        <!-- /shop -->  
+      <% end %>   
+    </div>
+    <!-- /row -->
+  </div>
+  <!-- /container -->
+</div>
+<!-- /SECTION -->
+<%= render 'services/service_detail_popup_model', services: @services %>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $(".add-service-id").on('click', function(){
+      var service_dashboard_id = $(this).attr('id')
+      var service_dashboard_id = service_dashboard_id.split('service_')[1]
+      $.ajax({
+        url: "<%= carts_path %>",
+        type: "POST",
+        data: {
+          service_dashboard_id: service_dashboard_id
+        }
+      });
+    });
+  });
+</script>

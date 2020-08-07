@@ -1,0 +1,24 @@
+<body class = "user-body">
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Username</th>
+      <th scope="col">Email</th>
+      <th scope="col">Role</th>
+      <th scope="col">Manage</th>
+      <th scope="col">Remove</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+    <tr>
+      <td><%= user.name %></td>
+      <td><%= user.email %></td>
+      <td><%= collection_select(:user, :role_id, Role.all, :id, :name, {:selected => user.role_id}) %></td>
+      <td><%= link_to "Change Role", panel_path(user,user.role_id ), :method=> :put %></td>    
+      <td><%= link_to 'Destroy', panel_path(user), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+</body>

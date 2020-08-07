@@ -1,0 +1,50 @@
+<!------ Include the above in your HEAD tag ---------->
+<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+  <%= render "devise/shared/error_messages", resource: resource %>
+	<!DOCTYPE html>
+	<html class = "devise-login">
+	<body class = "devise-login">
+	<div class="container">
+		<div class="d-flex justify-content-center h-100">
+			<div class="card">
+				<div class="card-header">
+					<h3>Sign In</h3>
+					<div class="d-flex justify-content-end social_icon">
+						<span><i class="fab fa-facebook-square"></i></span>
+						<span><i class="fab fa-google-plus-square"></i></span>
+						<span><i class="fab fa-twitter-square"></i></span>
+					</div>
+				</div>
+				<div class="card-body">
+					<form>
+						<div class="input-group form-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text"><i class="fas fa-user"></i></span>
+							</div>
+							<!-- <input type="text" class="form-control" placeholder="username"> -->
+							<%= f.email_field :email, autofocus: true, autocomplete: "email",class: "form-control", placeholder: "Email" %>
+						</div>
+						<div class="form-group">							
+							<%= f.submit "Reset", class: "btn float-right login_btn" %>
+						</div>
+					</form>
+				</div>
+				<div class="card-footer">
+					<div class="d-flex justify-content-center links">
+						Don't have an account?
+						<%- if devise_mapping.registerable? && controller_name != 'registrations' %>
+						  <%= link_to "Sign up", new_registration_path(resource_name) %><br />
+						<% end %>
+					</div>
+					<div class="d-flex justify-content-center">
+						<%- if controller_name != 'sessions' %>
+						  <%= link_to "Log in", new_session_path(resource_name) %><br />
+						<% end %>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</body>
+	</html>
+<% end %>

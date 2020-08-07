@@ -1,0 +1,13 @@
+<%= form_for @category do |cat| %>
+	<div class="form-group">
+	<%= cat.label :name %>
+	<%=cat.text_field :name %>
+	</div>
+  <div class="form-group">
+    <%= cat.label :image %>
+    <%= cat.file_field :image, class: 'form-control' %>
+  </div>
+	<div class="form-group">
+	<%= cat.submit %>
+	</div>
+<% end %>

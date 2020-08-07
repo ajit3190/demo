@@ -1,0 +1,158 @@
+<!-- HEADER -->
+<header>
+  <!-- TOP HEADER -->
+  <div id="top-header">
+    <div class="container">
+      <ul class="header-links pull-left">
+        <% if current_user.present? %>
+          <li><a href=""><i class="fa fa-phone"></i> <%= current_user.name %></a></li>
+          <li><a href=""><i class="fa fa-envelope-o"></i> <%= current_user.email %></a></li>
+          <% else %>
+          <li><a href=""><i class="fa fa-phone"></i>Phone</a></li>
+          <li><a href=""><i class="fa fa-envelope-o"></i> Email</a></li>
+        <% end %>
+      </ul>
+      <ul class="header-links pull-right">
+        <% if current_user.present? %>
+          <li style="float:right"><i class="fa fa-user-o"></i><%= link_to 'Log Out', destroy_user_session_path, method: :delete %></li>
+        <% else %>
+          <li style="float:right"><i class="fa fa-user-o"><%= link_to 'My Account', new_user_session_path %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+  <!-- /TOP HEADER -->
+
+  <!-- MAIN HEADER -->
+  <div id="header">
+    <!-- container -->
+    <div class="container">
+      <!-- row -->
+      <div class="row">
+        <!-- LOGO -->
+        <div class="col-md-3">
+          <div class="header-logo">
+            <a href="" class="logo">
+              <img src="/assets/logo.png" alt="">
+            </a>
+          </div>
+        </div>
+        <!-- /LOGO -->
+
+        <!-- SEARCH BAR -->
+        <div class="col-md-6">
+          <div class="header-search">
+            <form>              
+              <%= form_tag(search_page_path, :method => "get",class: 'navbar-form navbar-left') do %>  
+                <div class="input-group">  
+                  <%= search_field_tag :search, params[:search], placeholder: "Search", class: "form-control" %>  
+                  <div class="input-group-btn">  
+                    <%= button_tag "search", :class => 'btn btn-info glyphicon glyphicon-search',:name => nil%>  
+                  </div>  
+                </div>  
+              <% end %>
+            </form>
+          </div>
+        </div>
+        <!-- /SEARCH BAR -->
+
+        <!-- ACCOUNT -->
+        <div class="col-md-3 clearfix">
+          <div class="header-ctn">
+            <!-- Cart -->
+            <div class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                <i class="fa fa-shopping-cart"></i>
+                <span>Your Cart</span>
+                <% if current_user.present? %>
+                <div class="qty"><%= @cart.cart_items.count %></div>
+                <% end %>
+              </a>
+              <div class="cart-dropdown">
+                <div class="cart-list">
+                  <% if current_user.nil? %>
+                    <h2>Please login first for adding services </h2>
+                  <% end %>
+
+                  <% if @cart_items.nil? || @cart_items.empty? %>
+                    <h1> Your Cart is Empty </h1>
+                  <% else %>
+                  <% current_user.present? && @cart_items.each do |ci| %>
+                  <div class="product-widget">
+                    <div class="product-img">
+                      <!-- <img src="/assets/product01.png" alt=""> --><%= cart_item_dashboard_img(ci) %>
+                    </div>
+                    <div class="product-body">
+                      <h3 class="product-name">Category :<%= ci.service.category.name %></h3>
+                      <h3 class="product-name">Service :<%= ci.service.title %></h3>
+                      <h4 class="product-price"><span class="qty">price : ₹</span><%= ci.service.price %></h4>
+                    </div>
+                    <!-- <button class="delete"><i class="fa fa-close"></i></button> -->
+                    <%= button_to 'X', cart_path(ci), class: 'add-to-cart-btn delete fa fa-close', method: :delete, data: {confirm: 'Are you sure?'} %>
+                  </div>
+                  <% end %>
+                  <% end %>
+                </div>
+                <div class="cart-summary">
+                  <% if current_user.present? %>
+                    <small><%= @cart.cart_items.count %> Item(s) selected</small>
+                  <% end %>
+                  <h5>SUBTOTAL: $2940.00</h5>
+                </div>
+                <div class="cart-btns">
+                  <%= link_to 'ViewCart', carts_path%>
+                  <a href="#">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+              </div>
+            </div>
+            <!-- /Cart -->
+
+            <!-- Menu Toogle -->
+            <div class="menu-toggle">
+              <a href="#">
+                <i class="fa fa-bars"></i>
+                <span>Menu</span>
+              </a>
+            </div>
+            <!-- /Menu Toogle -->
+          </div>
+        </div>
+        <!-- /ACCOUNT -->
+      </div>
+      <!-- row -->
+    </div>
+    <!-- container -->
+  </div>
+  <!-- /MAIN HEADER -->
+</header>
+<!-- /HEADER -->
+
+
+<!-- NAVIGATION -->
+<nav id="navigation">
+  <!-- container -->
+  <div class="container">
+    <!-- responsive-nav -->
+    <div id="responsive-nav">
+      <!-- NAV -->
+      <ul class="main-nav nav navbar-nav">
+        <li class="active"><%= link_to "Home", root_path %></li>
+        <% if current_user.present? && current_user.role_id == 1 %>
+          <li><%= link_to "Services", services_path %></li>
+          <li><%= link_to 'Add Service', new_service_path%></li>
+          <li><%= link_to 'Categories', categories_path%></li>
+          <li><%= link_to 'Add Category', new_category_path%></li>
+        <% end %>
+        <li><%= link_to 'Cart', carts_path%></li>
+        <% if current_user.present? && current_user.role_id == 1 %>  
+          <li><%= link_to 'Users', panels_path%></li>
+         <% end %>        
+      </ul>
+      <!-- /NAV -->
+    </div>
+    <!-- /responsive-nav -->
+  </div>
+  <!-- /container -->
+</nav>
+<!-- /NAVIGATION -->
+
